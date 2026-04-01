@@ -161,7 +161,7 @@
       '    <w:lvl w:ilvl="0">\n' +
       '      <w:start w:val="1"/>\n' +
       '      <w:numFmt w:val="bullet"/>\n' +
-      '      <w:lvlText w:val="\u2022"/>\n' +
+      '      <w:lvlText w:val="&#xF0B7;"/>\n' +
       '      <w:lvlJc w:val="left"/>\n' +
       '      <w:pPr><w:ind w:left="720" w:hanging="360"/></w:pPr>\n' +
       '      <w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:hint="default"/></w:rPr>\n' +
@@ -324,7 +324,7 @@
   window.downloadDocx = async function () {
     if (!_meeting) return;
     var blob = await generateDocx(_meeting);
-    var filename = sanitizeFilename(_meeting.title) + ' - Meeting Minutes.docx';
+    var filename = sanitizeFilename(_meeting.title) + ' - Meeting Minutes - ' + sanitizeFilename(_meeting.date) + '.docx';
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
@@ -343,7 +343,7 @@
     var html = '';
 
     html += '<div class="download-bar">' +
-      '<span class="filename">' + sanitizeFilename(m.title) + ' - Meeting Minutes.docx</span>' +
+      '<span class="filename">' + sanitizeFilename(m.title) + ' - Meeting Minutes - ' + sanitizeFilename(m.date) + '.docx</span>' +
       '<button onclick="downloadDocx()">Download Word Document</button>' +
       '</div>';
 
