@@ -1,0 +1,44 @@
+<div id="app"></div>
+<script>
+// ============================================================
+// MEETING DATA — Claude populates this object for each meeting
+// ============================================================
+const MEETING = {
+  title: "Meeting Title",
+  date: "April 1, 2026",
+  attendees: "Name A, Name B",
+  project: "Project Name",
+  summary: {
+    text: "One-sentence summary of the meeting.",
+    bullets: [
+      "Key topic discussed",
+      "Outcome or decision reached"
+    ]
+  },
+  // Sections below are OPTIONAL — set to null to omit
+  keyDecisions: null,
+  openIssues: null,
+  actionItems: null,
+  personalActionItems: [],  // { name: "Jake Gelhard", items: ["Item 1"] }
+  nextMeeting: null,
+  distributionList: null
+};
+
+// ============================================================
+// ENGINE — fetched at runtime from GitHub
+// ============================================================
+const ENGINE_URL = "https://raw.githubusercontent.com/jgelhard/ehv-meeting-minutes/main/engine.js";
+
+fetch(ENGINE_URL)
+  .then(r => { if (!r.ok) throw new Error("Engine fetch failed: " + r.status); return r.text(); })
+  .then(code => {
+    const blob = new Blob([code], { type: "application/javascript" });
+    const url = URL.createObjectURL(blob);
+    const script = document.createElement("script");
+    script.src = url;
+    script.onload = () => { URL.revokeObjectURL(url); init(MEETING); };
+    script.onerror = () => document.getElementById("app").textContent = "Engine load failed.";
+    document.head.appendChild(script);
+  })
+  .catch(e => document.getElementById("app").textContent = e.message);
+</script>
